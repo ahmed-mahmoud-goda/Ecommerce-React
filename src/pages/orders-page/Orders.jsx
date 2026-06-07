@@ -1,11 +1,11 @@
-import { Link } from 'react-router';
 import axios from 'axios';
-import { useState, useEffect, Fragment } from 'react';
+import { useState, useEffect } from 'react';
 import './orders.css'
 import Header from '../../components/header/Header';
 import dayjs from 'dayjs';
+import OrderProduct from './OrderProduct';
 
-function Orders({ cart }) {
+function Orders({ cart, getCartData}) {
 
   const [orders, setOrders] = useState([]);
 
@@ -50,35 +50,7 @@ function Orders({ cart }) {
                   {order.products.map((orderProduct) => {
                     {
                       return (
-                        <Fragment key={orderProduct.product.id}>
-                          <div className="product-image-container">
-                            <img src={orderProduct.product.image} />
-                          </div>
-
-                          <div className="product-details">
-                            <div className="product-name">
-                              {orderProduct.product.name}
-                            </div>
-                            <div className="product-delivery-date">
-                              Arriving on: {dayjs(orderProduct.product.estimatedDeliveryTimeMs).format('MMMM D')}
-                            </div>
-                            <div className="product-quantity">
-                              Quantity: {orderProduct.quantity}
-                            </div>
-                            <button className="buy-again-button button-primary">
-                              <img className="buy-again-icon" src="images/icons/buy-again.png" />
-                              <span className="buy-again-message">Add to Cart</span>
-                            </button>
-                          </div>
-
-                          <div className="product-actions">
-                            <Link to={`/tracking/${order.id}/${orderProduct.product.id}`}>
-                              <button className="track-package-button button-secondary">
-                                Track package
-                              </button>
-                            </Link>
-                          </div>
-                        </Fragment>
+                        <OrderProduct key={orderProduct.product.id} getCartData={getCartData} order={order} orderProduct={orderProduct} />
                       );
                     }
                   })}
